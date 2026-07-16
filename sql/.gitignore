@@ -1,0 +1,25 @@
+# Python virtual environment
+.venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# VS Code settings
+.vscode/
+
+# macOS system files
+.DS_Store
+
+# Environment variables / secrets
+.env
+
+# Docker logs
+*.log
+
+# SQL Server data (pokud by se někde vytvořila lokálně)
+*.mdf
+*.ldf
+
+# Temporary files
+*.tmp
