@@ -10,6 +10,7 @@ services:
       - "1433:1433"
     volumes:
       - sqlserver_data:/var/opt/mssql
+      - ./dataset:/dataset
 
 volumes:
   sqlserver_data:
