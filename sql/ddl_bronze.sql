@@ -1,56 +1,67 @@
-IF OBJECT_ID('bronze.crm_cust_info' , 'U') IS NOT NULL
-    DROP TABLE bronze.crm_cust_info;
+-- Active: 1784470355426@@localhost@5433@DataWarehouse
+DROP TABLE IF EXISTS bronze.crm_cust_info;
+
 CREATE TABLE bronze.crm_cust_info (
-    cst_id INT,
-    cst_key NVARCHAR(50),
-    cst_firstname NVARCHAR(50),
-    cst_lastname NVARCHAR(50),
-    cst_material_status NVARCHAR(50),
-    cst_gndr NVARCHAR(50),
-    cst_crate_date DATE
+    cst_id INTEGER,
+    cst_key VARCHAR(50),
+    cst_firstname VARCHAR(50),
+    cst_lastname VARCHAR(50),
+    cst_material_status VARCHAR(50),
+    cst_gndr VARCHAR(50),
+    cst_create_date DATE
 );
-IF OBJECT_ID('bronze.crm_prd_info' , 'U') IS NOT NULL
-    DROP TABLE bronze.crm_prd_info;
-CREATE TABLE bronze.crm_prd_info(
-    prd_id INT,
-    prd_key NVARCHAR(50),
-    prd_nm NVARCHAR(50),
-    prd_cost INT,
-    prd_line NVARCHAR(50),
+
+
+DROP TABLE IF EXISTS bronze.crm_prd_info;
+
+CREATE TABLE bronze.crm_prd_info (
+    prd_id INTEGER,
+    prd_key VARCHAR(50),
+    prd_nm VARCHAR(50),
+    prd_cost INTEGER,
+    prd_line VARCHAR(50),
     prd_start_dt DATE,
     prd_end_dt DATE
 );
-IF OBJECT_ID('bronze.sales_details' , 'U') IS NOT NULL
-    DROP TABLE bronze.sales_details;
-CREATE TABLE bronze.sales_details(
-    sls_ord_num NVARCHAR(50),
-    sls_prd_key NVARCHAR(50),
-    sls_cust_id INT,
-    sls_order_dt INT,
-    sls_ship_dt INT,
-    sls_due_dt INT,
-    sls_sales INT,
-    sls_quantity INT,
-    sls_price INT
+
+
+DROP TABLE IF EXISTS bronze.sales_details;
+
+CREATE TABLE bronze.sales_details (
+    sls_ord_num VARCHAR(50),
+    sls_prd_key VARCHAR(50),
+    sls_cust_id INTEGER,
+    sls_order_dt INTEGER,
+    sls_ship_dt INTEGER,
+    sls_due_dt INTEGER,
+    sls_sales INTEGER,
+    sls_quantity INTEGER,
+    sls_price INTEGER
 );
-IF OBJECT_ID('bronze.px_cat_G1V2' , 'U') IS NOT NULL
-    DROP TABLE bronze.px_cat_G1V2;
-CREATE TABLE bronze.px_cat_G1V2(
-    id NVARCHAR(50),
-    cat NVARCHAR(50),
-    subcat NVARCHAR(50),
-    maintenance NVARCHAR(50)
+
+
+DROP TABLE IF EXISTS bronze.px_cat_G1V2;
+
+CREATE TABLE bronze.px_cat_G1V2 (
+    id VARCHAR(50),
+    cat VARCHAR(50),
+    subcat VARCHAR(50),
+    maintenance VARCHAR(50)
 );
-IF OBJECT_ID('bronze.loc_a101' , 'U') IS NOT NULL
-    DROP TABLE bronze.loc_a101;
-CREATE TABLE bronze.loc_a101(
-    cid NVARCHAR(50),
-    cntry NVARCHAR(50)
+
+
+DROP TABLE IF EXISTS bronze.loc_a101;
+
+CREATE TABLE bronze.loc_a101 (
+    cid VARCHAR(50),
+    cntry VARCHAR(50)
 );
-IF OBJECT_ID('bronze.cust_az12' , 'U') IS NOT NULL
-    DROP TABLE bronze.cust_az12;
-CREATE TABLE bronze.cust_az12(
-    cid NVARCHAR(50),
+
+
+DROP TABLE IF EXISTS bronze.cust_az12;
+
+CREATE TABLE bronze.cust_az12 (
+    cid VARCHAR(50),
     bdate DATE,
-    gen NVARCHAR(50)
+    gen VARCHAR(50)
 );

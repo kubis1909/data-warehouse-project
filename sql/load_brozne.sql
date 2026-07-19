@@ -1,91 +1,123 @@
-CREATE or ALTER PROCEDURE bronze.load_bronze as 
+-- Active: 1784470355426@@localhost@5433@DataWarehouse
+CREATE OR REPLACE PROCEDURE bronze.load_bronze()
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    start_time TIMESTAMP;
+    end_time TIMESTAMP;
 BEGIN
-    DECLARE @start_time DATE, @end_time DATE
-    BEGIN TRY
-        PRINT '======================='
-        PRINT 'Loading Bronze Layer'
-        PRINT '======================='
 
-        SET @start_time = GETDATE();
-        PRINT '>> Truncating table: bronze.crm_cust_info'
-        TRUNCATE table bronze.crm_cust_info;
+    RAISE NOTICE '=======================';
+    RAISE NOTICE 'Loading Bronze Layer';
+    RAISE NOTICE '=======================';
 
-        PRINT '>> Inserting Table: bronze.crm_cust_info'
-        BULK INSERT bronze.crm_cust_info
-        FROM '/dataset/cust_info.csv'
-        WITH(
-            FIRSTROW = 2, 
-            FIELDTERMINATOR = ',',
-            TABLOCK
-        );
-        
 
-        PRINT '>> Truncating table: bronze.crm_prd_info'
-        TRUNCATE table bronze.crm_prd_info;
+    start_time := CURRENT_TIMESTAMP;
 
-        PRINT '>> Inserting Table: bronze.crm_prd_info'
-        BULK INSERT bronze.crm_prd_info
-    
-        FROM '/dataset/prd_info.csv'
-        WITH(
-            FIRSTROW = 2,
-            FIELDTERMINATOR = ',',
-            TABLOCK
-        );
-        PRINT '>> Truncating table: bronze.cust_az12'
-        TRUNCATE table bronze.cust_az12;
 
-        PRINT '>> Inserting Table: bronze.cust_az12'
-        BULK INSERT bronze.cust_az12
-        FROM '/dataset/CUST_AZ12.csv'
-        WITH(
-            FIRSTROW = 2,
-            FIELDTERMINATOR = ',',
-            TABLOCK
-        );
+    RAISE NOTICE '>> Truncating table: bronze.crm_cust_info';
 
-        PRINT '>> Truncating table: bronze.loc_a101'
-        TRUNCATE table bronze.loc_a101;
+    TRUNCATE TABLE bronze.crm_cust_info;
 
-        PRINT '>> Inserting Table: bronze.loc_a101'
-        BULK INSERT bronze.loc_a101
-        FROM '/dataset/LOC_A101.csv'
-        WITH(
-            FIRSTROW = 2,
-            FIELDTERMINATOR = ',',
-            TABLOCK
-        );
 
-        PRINT '>> Truncating table: bronze.px_cat_G1V2'
-        TRUNCATE table bronze.px_cat_G1V2;
+    RAISE NOTICE '>> Loading table: bronze.crm_cust_info';
 
-        PRINT '>> Inserting Table: bronze.px_cat_G1V2'
-        BULK INSERT bronze.px_cat_G1V2
-        FROM '/dataset/PX_CAT_G1V2.csv'
-        WITH(
-            FIRSTROW = 2,
-            FIELDTERMINATOR = ',',
-            TABLOCK
-        );
+    COPY bronze.crm_cust_info
+    FROM '/dataset/cust_info.csv'
+    WITH (
+        FORMAT CSV,
+        HEADER TRUE,
+        DELIMITER ','
+    );
 
-        PRINT '>> Truncating table: bronze.sales_details'
-        TRUNCATE table bronze.sales_details;
 
-        PRINT '>> Inserting Table:bronze.sales_details'
-        BULK INSERT bronze.sales_details
-        FROM '/dataset/sales_details.csv'
-        WITH(
-            FIRSTROW = 2,
-            FIELDTERMINATOR = ',',
-            TABLOCK
-        );
-    
-        PRINT 'Duration time: ' CAST(TIMEDIFF(second, @start_time, @end_time) AS NVARCHAR(50) + ' seconds');
-    END TRY
-    BEGIN CATCH
-    PRINT '==========================='
-    PRINT 'Error Message' + ERROR_MESSAGE();
-    PRINT '==========================='
-    END CATCH
-END
+    RAISE NOTICE '>> Truncating table: bronze.crm_prd_info';
 
+    TRUNCATE TABLE bronze.crm_prd_info;
+
+
+    RAISE NOTICE '>> Loading table: bronze.crm_prd_info';
+
+    COPY bronze.crm_prd_info
+    FROM '/dataset/prd_info.csv'
+    WITH (
+        FORMAT CSV,
+        HEADER TRUE,
+        DELIMITER ','
+    );
+
+
+    RAISE NOTICE '>> Truncating table: bronze.cust_az12';
+
+    TRUNCATE TABLE bronze.cust_az12;
+
+
+    COPY bronze.cust_az12
+    FROM '/dataset/CUST_AZ12.csv'
+    WITH (
+        FORMAT CSV,
+        HEADER TRUE,
+        DELIMITER ','
+    );
+
+
+    RAISE NOTICE '>> Truncating table: bronze.loc_a101';
+
+    TRUNCATE TABLE bronze.loc_a101;
+
+
+    COPY bronze.loc_a101
+    FROM '/dataset/LOC_A101.csv'
+    WITH (
+        FORMAT CSV,
+        HEADER TRUE,
+        DELIMITER ','
+    );
+
+
+    RAISE NOTICE '>> Truncating table: bronze.px_cat_G1V2';
+
+    TRUNCATE TABLE bronze.px_cat_G1V2;
+
+
+    COPY bronze.px_cat_G1V2
+    FROM '/dataset/PX_CAT_G1V2.csv'
+    WITH (
+        FORMAT CSV,
+        HEADER TRUE,
+        DELIMITER ','
+    );
+
+
+    RAISE NOTICE '>> Truncating table: bronze.sales_details';
+
+    TRUNCATE TABLE bronze.sales_details;
+
+
+    COPY bronze.sales_details
+    FROM '/dataset/sales_details.csv'
+    WITH (
+        FORMAT CSV,
+        HEADER TRUE,
+        DELIMITER ','
+    );
+
+
+    end_time := CURRENT_TIMESTAMP;
+
+
+    RAISE NOTICE 'Duration: % seconds',
+        EXTRACT(EPOCH FROM (end_time - start_time));
+
+
+EXCEPTION
+    WHEN OTHERS THEN
+
+        RAISE NOTICE '=======================';
+        RAISE NOTICE 'Error: %', SQLERRM;
+        RAISE NOTICE '=======================';
+
+END;
+$$;
+
+SELECT * FROM bronze.crm_cust_info;
